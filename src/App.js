@@ -1,24 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import About from "./Components/About";
+import Navbar from "./Components/Navbar";
+import TextForm from "./Components/TextForm";
+import Alert from "./Components/Alert";
+import React, { useState } from 'react';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+
 
 function App() {
+  const [mode, setMode] = useState('light');
+  const toggleMode = () =>{
+    if(mode === 'light'){
+      setMode('dark');
+      document.body.style.backgroundColor = '#042743';
+      showAlert("Dark mode has been enabled", "success");
+      document.title = "TextUtils - Dark Mode";
+    }
+    else{
+      setMode('light');
+      document.body.style.backgroundColor = 'white';
+      showAlert("Light mode has been enabled", "success");
+      document.title = "TextUtils - Light Mode";
+    }
+  }
+  
+  const [alert, setAlert] = useState(null);
+
+  const showAlert = (message, type) =>{
+    setAlert(
+      {
+        msg : message,
+        type : type
+      }
+    )
+    setTimeout(() => {
+      setAlert(null);
+    }, 1500);
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Router>
+      <Navbar title="textUtils" about="About Us" mode={mode} toggleMode = {toggleMode}/>
+      <Alert alert={alert}/>
+      <div className="container my-4">
+      <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/">
+            <TextForm heading="Enter your text here" mode={mode} showAlert={showAlert}/> 
+          </Route>
+      </Switch>
+        {/* <About/> */}
+      </div>
+    </Router>
+    </>
   );
 }
 
