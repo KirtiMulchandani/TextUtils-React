@@ -7,11 +7,10 @@ import React, { useState } from 'react';
 
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route,
   Link
-} from "react-router-dom";
-
+}from "react-router-dom";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -46,19 +45,16 @@ function App() {
 
   return (
     <>
-      <Router>
+    <Router>
       <Navbar title="textUtils" about="About Us" mode={mode} toggleMode = {toggleMode}/>
       <Alert alert={alert}/>
       <div className="container my-4">
-      <Switch>
-          <Route path="/about">
-            <About />
+      <Routes>
+      <Route exact path='/about' element={<About/>}>
           </Route>
-          <Route path="/">
-            <TextForm heading="Enter your text here" mode={mode} showAlert={showAlert}/> 
+          <Route exact path='/' element={<TextForm heading="Enter your text here" mode={mode} showAlert={showAlert}/>}>
           </Route>
-      </Switch>
-        {/* <About/> */}
+      </Routes>
       </div>
     </Router>
     </>
